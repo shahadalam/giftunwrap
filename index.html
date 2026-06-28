@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>A Special Surprise for Tavila ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{width:100%;height:100%;overflow-x:hidden}
+
+body{
+  background:#060810;
+  font-family:'Inter',sans-serif;
+  color:#EDE8DC;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+/* ─ Stars ─ */
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+.star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d) ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:var(--op);transform:scale(1)}50%{opacity:.1;transform:scale(.5)}}
+
+/* ─ Gold dust particles ─ */
+#dust{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.dust{
+  position:absolute;
+  border-radius:50%;
+  background:radial-gradient(circle,#C8973A,#F5DFA0);
+  opacity:0;
+  animation:riseUp var(--rd) ease-in infinite;
+  animation-delay:var(--rl);
+}
+@keyframes riseUp{
+  0%{opacity:0;transform:translateY(0) scale(0)}
+  20%{opacity:.8}
+  100%{opacity:0;transform:translateY(-120vh) scale(1) rotate(720deg)}
+}
+
+/* ─ Main stage ─ */
+#stage{
+  position:relative;z-index:10;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;padding:2rem;
+  max-width:680px;width:100%;
+}
+
+/* ─ PHASE 0: envelope ─ */
+#phase-envelope{
+  display:flex;flex-direction:column;align-items:center;gap:2rem;
+  animation:fadeIn .8s forwards;
+}
+.envelope-wrap{
+  position:relative;
+  cursor:pointer;
+  width:200px;height:140px;
+}
+.envelope-wrap:hover .env-lid{transform:rotateX(-160deg);transform-origin:top center}
+.env-body{
+  position:absolute;bottom:0;left:0;right:0;
+  height:120px;
+  background:linear-gradient(160deg,#1A1F30,#111520);
+  border:1px solid rgba(200,151,58,.35);
+  border-radius:0 0 14px 14px;
+  overflow:hidden;
+}
+.env-body::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;top:0;
+  background:linear-gradient(135deg,transparent 49.5%,rgba(200,151,58,.08) 50%);
+}
+.env-flap-l{position:absolute;bottom:0;left:0;width:0;height:0;border-style:solid;border-width:0 0 120px 100px;border-color:transparent transparent rgba(200,151,58,.12) transparent}
+.env-flap-r{position:absolute;bottom:0;right:0;width:0;height:0;border-style:solid;border-width:0 100px 120px 0;border-color:transparent rgba(200,151,58,.12) transparent transparent}
+.env-lid{
+  position:absolute;top:0;left:0;right:0;
+  height:70px;
+  background:linear-gradient(160deg,#1E2540,#151A2E);
+  border:1px solid rgba(200,151,58,.25);
+  border-bottom:none;
+  border-radius:14px 14px 0 0;
+  clip-path:polygon(0 0,100% 0,50% 100%);
+  transition:transform .5s ease;
+  transform-style:preserve-3d;
+  transform-origin:top center;
+}
+.env-seal{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:34px;height:34px;border-radius:50%;
+  background:radial-gradient(circle,#C8973A,#A07020);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;
+  box-shadow:0 0 0 3px rgba(200,151,58,.25),0 0 20px rgba(200,151,58,.3);
+  animation:sealPulse 2.5s ease-in-out infinite;
+  z-index:2;
+}
+@keyframes sealPulse{0%,100%{box-shadow:0 0 0 3px rgba(200,151,58,.25),0 0 20px rgba(200,151,58,.3)}50%{box-shadow:0 0 0 6px rgba(200,151,58,.15),0 0 40px rgba(200,151,58,.5)}}
+
+.phase0-label{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.4rem,4vw,1.9rem);
+  font-style:italic;
+  color:#C8973A;
+  line-height:1.3;
+}
+.phase0-sub{font-size:.88rem;color:#9A9080;line-height:1.6;max-width:340px}
+.open-btn{
+  margin-top:.5rem;
+  padding:.85rem 2.5rem;
+  background:linear-gradient(135deg,#C8973A,#A07020);
+  color:#060810;
+  border:none;border-radius:100px;
+  font-size:.9rem;font-weight:700;letter-spacing:.08em;
+  cursor:pointer;
+  transition:transform .3s,box-shadow .3s;
+  position:relative;overflow:hidden;
+}
+.open-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);border-radius:100px}
+.open-btn:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 16px 40px rgba(200,151,58,.45)}
+
+/* ─ PHASE 1: letter unfurl ─ */
+#phase-letter{
+  display:none;
+  flex-direction:column;align-items:center;gap:1.5rem;
+  opacity:0;
+}
+.letter-paper{
+  background:linear-gradient(160deg,#111520,#1A1F30);
+  border:1px solid rgba(200,151,58,.2);
+  border-radius:20px;
+  padding:2.5rem 2.8rem;
+  max-width:520px;width:100%;
+  position:relative;overflow:hidden;
+  animation:unfurl .7s cubic-bezier(.22,1,.36,1) forwards;
+  transform-origin:top center;
+}
+@keyframes unfurl{from{transform:scaleY(0);opacity:0}to{transform:scaleY(1);opacity:1}}
+.letter-paper::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,#1B6B72,#C8973A,#1B6B72);
+}
+.letter-greeting{
+  font-family:'Playfair Display',serif;
+  font-size:1.5rem;font-style:italic;
+  color:#C8973A;margin-bottom:1.2rem;
+}
+.letter-body{
+  font-size:.92rem;color:#B0A898;line-height:1.9;
+  text-align:left;
+}
+.letter-body strong{color:#EDE8DC}
+.letter-body .highlight{
+  display:inline-block;
+  background:rgba(200,151,58,.12);
+  border:1px solid rgba(200,151,58,.2);
+  border-radius:6px;
+  padding:.1rem .5rem;
+  color:#C8973A;font-weight:600;
+}
+.letter-sig{margin-top:1.5rem;font-family:'Playfair Display',serif;font-style:italic;color:#C8973A;font-size:1.05rem}
+.letter-divider{width:60px;height:1px;background:rgba(200,151,58,.3);margin:1rem 0}
+.letter-next-btn{
+  padding:.8rem 2rem;
+  background:transparent;
+  border:1px solid rgba(200,151,58,.4);
+  color:#C8973A;border-radius:100px;
+  font-size:.85rem;letter-spacing:.1em;text-transform:uppercase;
+  cursor:pointer;transition:all .3s;margin-top:.5rem;
+}
+.letter-next-btn:hover{background:rgba(200,151,58,.1);border-color:#C8973A}
+
+/* ─ PHASE 2: big reveal ─ */
+#phase-reveal{
+  display:none;flex-direction:column;align-items:center;gap:2rem;
+  opacity:0;
+}
+.reveal-crown{font-size:3rem;animation:crownBounce 1s ease forwards}
+@keyframes crownBounce{0%{transform:scale(0) rotate(-20deg)}60%{transform:scale(1.2) rotate(5deg)}100%{transform:scale(1) rotate(0)}}
+
+.reveal-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.8rem,5vw,3rem);
+  font-weight:700;
+  line-height:1.15;
+  background:linear-gradient(135deg,#F5DFA0,#C8973A,#E2B96F);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.reveal-sub{font-size:.95rem;color:#9A9080;max-width:400px;line-height:1.7}
+
+/* preview card */
+.preview-card{
+  position:relative;
+  width:100%;max-width:540px;
+  border-radius:22px;
+  overflow:hidden;
+  border:1px solid rgba(200,151,58,.25);
+  transition:transform .4s,box-shadow .4s;
+  cursor:pointer;
+  text-decoration:none;
+  display:block;
+}
+.preview-card:hover{transform:translateY(-8px) scale(1.01);box-shadow:0 30px 70px rgba(0,0,0,.6),0 0 60px rgba(200,151,58,.15)}
+
+.preview-browser{
+  background:#0E1220;
+  padding:.7rem 1rem;
+  display:flex;align-items:center;gap:.6rem;
+  border-bottom:1px solid rgba(200,151,58,.12);
+}
+.browser-dots{display:flex;gap:.4rem}
+.browser-dots span{width:10px;height:10px;border-radius:50%}
+.bd1{background:#C85959}
+.bd2{background:#C8A259}
+.bd3{background:#59C87A}
+.browser-url{
+  flex:1;background:rgba(255,255,255,.06);
+  border-radius:6px;padding:.3rem .8rem;
+  font-size:.72rem;color:#9A9080;letter-spacing:.02em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+
+.preview-iframe-wrap{
+  position:relative;height:340px;background:#0A0C14;overflow:hidden;
+}
+.preview-iframe-wrap iframe{
+  width:200%;height:200%;
+  border:none;
+  transform:scale(.5);transform-origin:top left;
+  pointer-events:none;
+}
+.preview-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 50%,rgba(6,8,16,.95) 100%);
+  display:flex;align-items:flex-end;justify-content:center;padding-bottom:1.5rem;
+}
+.visit-badge{
+  display:inline-flex;align-items:center;gap:.6rem;
+  background:linear-gradient(135deg,#C8973A,#A07020);
+  color:#060810;font-weight:700;font-size:.85rem;letter-spacing:.08em;
+  padding:.7rem 2rem;border-radius:100px;
+  box-shadow:0 8px 30px rgba(200,151,58,.45);
+  animation:visitPulse 2.5s ease-in-out infinite;
+}
+@keyframes visitPulse{0%,100%{box-shadow:0 8px 30px rgba(200,151,58,.4)}50%{box-shadow:0 8px 50px rgba(200,151,58,.7)}}
+
+/* share strip */
+.share-strip{
+  display:flex;flex-direction:column;align-items:center;gap:.8rem;
+  margin-top:.5rem;
+}
+.share-label{font-size:.75rem;color:#9A9080;letter-spacing:.12em;text-transform:uppercase}
+.share-btns{display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center}
+.share-btn{
+  padding:.5rem 1.2rem;
+  border:1px solid rgba(200,151,58,.25);
+  color:#C8973A;border-radius:100px;
+  font-size:.78rem;text-decoration:none;
+  transition:all .3s;cursor:pointer;background:transparent;
+}
+.share-btn:hover{background:rgba(200,151,58,.1);border-color:#C8973A}
+
+/* dubai skyline mini footer */
+.sky-footer{
+  position:fixed;bottom:0;left:0;right:0;height:90px;pointer-events:none;z-index:5;opacity:.35;
+}
+
+/* confetti canvas */
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:20;opacity:0;transition:opacity .5s}
+
+/* utils */
+.hidden{display:none!important}
+@keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeIn .6s ease forwards}
+
+/* ─ Responsive ─ */
+@media(max-width:560px){
+  .letter-paper{padding:1.8rem 1.5rem}
+  .preview-iframe-wrap{height:240px}
+}
+</style>
+</head>
+<body>
+
+<!-- Stars -->
+<div id="stars"></div>
+
+<!-- Gold dust -->
+<div id="dust"></div>
+
+<!-- Confetti canvas -->
+<canvas id="confetti"></canvas>
+
+<!-- Dubai mini skyline footer -->
+<div class="sky-footer">
+  <svg width="100%" height="90" viewBox="0 0 1440 90" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <g fill="#C8973A" opacity="0.6">
+      <rect x="0" y="55" width="60" height="35"/>
+      <rect x="65" y="45" width="45" height="45"/>
+      <rect x="115" y="50" width="35" height="40"/>
+      <rect x="155" y="35" width="28" height="55"/>
+      <rect x="188" y="40" width="50" height="50"/>
+      <rect x="245" y="25" width="22" height="65"/>
+      <polygon points="245,25 256,10 267,25"/>
+      <rect x="273" y="30" width="20" height="60"/>
+      <polygon points="273,30 283,18 293,30"/>
+      <!-- Burj K mini -->
+      <rect x="340" y="5" width="12" height="85"/>
+      <rect x="337" y="25" width="18" height="5"/>
+      <rect x="336" y="45" width="20" height="4"/>
+      <polygon points="336,75 346,85 356,75" fill="none" stroke="#C8973A" stroke-width="0.5"/>
+      <!-- Burj Al Arab -->
+      <rect x="400" y="30" width="6" height="60"/>
+      <path d="M406 30 Q440 38 440 90 L406 90Z"/>
+      <path d="M400 30 Q366 38 366 90 L400 90Z"/>
+      <rect x="480" y="20" width="18" height="70"/>
+      <polygon points="480,20 489,5 498,20"/>
+      <rect x="505" y="28" width="16" height="62"/>
+      <polygon points="505,28 513,15 521,28"/>
+      <rect x="560" y="35" width="28" height="55"/>
+      <rect x="595" y="40" width="24" height="50"/>
+      <rect x="626" y="30" width="22" height="60"/>
+      <rect x="700" y="50" width="40" height="40"/>
+      <rect x="745" y="42" width="35" height="48"/>
+      <rect x="790" y="38" width="28" height="52"/>
+      <rect x="900" y="45" width="60" height="45"/>
+      <rect x="965" y="35" width="45" height="55"/>
+      <rect x="1015" y="40" width="35" height="50"/>
+      <rect x="1100" y="50" width="60" height="40"/>
+      <rect x="1165" y="42" width="50" height="48"/>
+      <rect x="1260" y="48" width="55" height="42"/>
+      <rect x="1320" y="38" width="40" height="52"/>
+      <rect x="1365" y="45" width="75" height="45"/>
+    </g>
+    <rect x="0" y="88" width="1440" height="2" fill="#C8973A" opacity="0.4"/>
+  </svg>
+</div>
+
+<!-- ══ STAGE ══ -->
+<div id="stage">
+
+  <!-- Phase 0: Envelope -->
+  <div id="phase-envelope">
+    <div class="envelope-wrap" onclick="openEnvelope()" title="Click to open">
+      <div class="env-lid"></div>
+      <div class="env-body">
+        <div class="env-flap-l"></div>
+        <div class="env-flap-r"></div>
+      </div>
+      <div class="env-seal">✦</div>
+    </div>
+    <div class="phase0-label">You have a special<br>surprise waiting… 🌸</div>
+    <div class="phase0-sub">Someone created something beautiful just for you. Click the envelope to discover it.</div>
+    <button class="open-btn" onclick="openEnvelope()">Open Your Surprise ✨</button>
+  </div>
+
+  <!-- Phase 1: Letter -->
+  <div id="phase-letter">
+    <div class="letter-paper">
+      <div class="letter-greeting">Dear Tavila,</div>
+      <div class="letter-body">
+        <p>Something special has been crafted — just for <strong>you</strong>.</p>
+        <br>
+        <p>You are someone who brings <strong>creativity, dedication, and warmth</strong> to everything you do. Your journey from India to the golden city of <span class="highlight">🏙️ Dubai</span> is a story of courage and ambition — and you deserve to have that story told beautifully.</p>
+        <br>
+        <p>So, a <strong>personal portfolio website</strong> has been built in your honour — showcasing your skills, your experience, and the unique professional you are. It's live on the internet, right now, waiting for the world to discover you.</p>
+        <br>
+        <p>You are ready for the world.<br>The world is ready for <strong>Tavila Ansari</strong>. 🌸</p>
+        <div class="letter-divider"></div>
+        <p style="font-size:.82rem;color:#7A7068">With admiration &amp; best wishes,</p>
+      </div>
+      <div class="letter-sig">Made with ❤️ for you</div>
+    </div>
+    <button class="letter-next-btn" onclick="showReveal()">See Your Portfolio → ✨</button>
+  </div>
+
+  <!-- Phase 2: Reveal -->
+  <div id="phase-reveal">
+    <div class="reveal-crown">👑</div>
+    <div class="reveal-title">Your Portfolio is Live!</div>
+    <div class="reveal-sub">Your very own corner of the internet — designed with Dubai's golden spirit, crafted just for you. 🇦🇪</div>
+
+    <a class="preview-card" href="https://shahadalam.github.io/Tavila-Portfolio-website/" target="_blank" onclick="trackClick()">
+      <div class="preview-browser">
+        <div class="browser-dots">
+          <span class="bd1"></span><span class="bd2"></span><span class="bd3"></span>
+        </div>
+        <div class="browser-url">shahadalam.github.io/Tavila-Portfolio-website/</div>
+      </div>
+      <div class="preview-iframe-wrap">
+        <iframe src="https://shahadalam.github.io/Tavila-Portfolio-website/" loading="lazy" title="Tavila Ansari Portfolio Preview" scrolling="no"></iframe>
+        <div class="preview-overlay">
+          <div class="visit-badge">✨ Visit Your Portfolio →</div>
+        </div>
+      </div>
+    </a>
+
+    <div class="share-strip">
+      <div class="share-label">Share your portfolio</div>
+      <div class="share-btns">
+        <button class="share-btn" onclick="copyLink()">📋 Copy Link</button>
+        <a class="share-btn" href="https://wa.me/?text=Check%20out%20my%20portfolio!%20https%3A%2F%2Fshahadalam.github.io%2FTavila-Portfolio-website%2F" target="_blank">💬 WhatsApp</a>
+        <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fshahadalam.github.io%2FTavila-Portfolio-website%2F" target="_blank">💼 LinkedIn</a>
+      </div>
+      <div id="copy-confirm" style="font-size:.78rem;color:#2A9DA6;opacity:0;transition:opacity .4s">✓ Link copied to clipboard!</div>
+    </div>
+  </div>
+
+</div><!-- /stage -->
+
+<script>
+/* ── Stars ── */
+const starEl = document.getElementById('stars');
+for(let i=0;i<120;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  const sz=Math.random()*2.5+.5;
+  const op=Math.random()*.7+.15;
+  const dur=(Math.random()*4+2).toFixed(1)+'s';
+  s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;--op:${op};--d:${dur};animation-delay:${(Math.random()*5).toFixed(1)}s`;
+  starEl.appendChild(s);
+}
+
+/* ── Gold dust ── */
+const dustEl=document.getElementById('dust');
+for(let i=0;i<30;i++){
+  const d=document.createElement('div');
+  d.className='dust';
+  const sz=Math.random()*6+2;
+  d.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;bottom:0;--rd:${(Math.random()*8+6).toFixed(1)}s;--rl:${(Math.random()*10).toFixed(1)}s`;
+  dustEl.appendChild(d);
+}
+
+/* ── Confetti ── */
+const canvas=document.getElementById('confetti');
+const ctx=canvas.getContext('2d');
+let pieces=[]; let animating=false;
+
+function resizeCanvas(){canvas.width=innerWidth;canvas.height=innerHeight}
+resizeCanvas();
+window.addEventListener('resize',resizeCanvas);
+
+function launchConfetti(){
+  canvas.style.opacity='1';
+  pieces=[];
+  const colors=['#C8973A','#F5DFA0','#E2B96F','#1B6B72','#2A9DA6','#fff','#C4736A'];
+  for(let i=0;i<160;i++){
+    pieces.push({
+      x:Math.random()*canvas.width,
+      y:Math.random()*canvas.height-canvas.height,
+      r:Math.random()*7+3,
+      d:Math.random()*160+80,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      tilt:Math.random()*10-10,
+      tiltAngleInc:Math.random()*.07+.05,
+      tiltAngle:0,
+      vx:(Math.random()-.5)*3,
+      vy:Math.random()*3+2
+    });
+  }
+  if(!animating){animating=true;animateConfetti();}
+  setTimeout(()=>{canvas.style.opacity='0';animating=false;},4500);
+}
+
+function animateConfetti(){
+  if(!animating)return;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  pieces.forEach(p=>{
+    p.tiltAngle+=p.tiltAngleInc;
+    p.x+=p.vx+Math.sin(p.d)*0.5;
+    p.y+=p.vy;
+    p.tilt=Math.sin(p.tiltAngle)*13;
+    p.d++;
+    ctx.beginPath();
+    ctx.lineWidth=p.r/2;
+    ctx.strokeStyle=p.color;
+    ctx.moveTo(p.x+p.tilt+p.r/3,p.y);
+    ctx.lineTo(p.x+p.tilt,p.y+p.tilt+p.r/5);
+    ctx.stroke();
+  });
+  requestAnimationFrame(animateConfetti);
+}
+
+/* ── Phase transitions ── */
+function openEnvelope(){
+  const env=document.getElementById('phase-envelope');
+  const lid=env.querySelector('.env-lid');
+  lid.style.transform='rotateX(-160deg)';
+  lid.style.transformOrigin='top center';
+  setTimeout(()=>{
+    env.style.opacity='0';
+    env.style.transition='opacity .4s';
+    setTimeout(()=>{
+      env.style.display='none';
+      const letter=document.getElementById('phase-letter');
+      letter.style.display='flex';
+      requestAnimationFrame(()=>{
+        letter.style.opacity='1';
+        letter.style.transition='opacity .6s';
+      });
+    },400);
+  },600);
+}
+
+function showReveal(){
+  const letter=document.getElementById('phase-letter');
+  letter.style.opacity='0';
+  letter.style.transition='opacity .4s';
+  setTimeout(()=>{
+    letter.style.display='none';
+    const rev=document.getElementById('phase-reveal');
+    rev.style.display='flex';
+    requestAnimationFrame(()=>{
+      rev.style.opacity='1';
+      rev.style.transition='opacity .7s';
+    });
+    setTimeout(launchConfetti,400);
+  },400);
+}
+
+function copyLink(){
+  navigator.clipboard.writeText('https://shahadalam.github.io/Tavila-Portfolio-website/').then(()=>{
+    const c=document.getElementById('copy-confirm');
+    c.style.opacity='1';
+    setTimeout(()=>c.style.opacity='0',2500);
+  });
+}
+
+function trackClick(){}
+</script>
+</body>
+</html>
